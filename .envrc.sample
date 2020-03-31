@@ -1,0 +1,6 @@
+# API keys
+export SLACKDUTY_PAGERDUTY_API_KEY=
+export SLACKDUTY_SLACK_API_KEY=
+
+# Config file
+export SLACKDUTY_CONFIG=

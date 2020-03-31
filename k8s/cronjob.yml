@@ -1,0 +1,43 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: slackduty
+  labels:
+    cronjob: slackduty
+spec:
+  concurrencyPolicy: Replace
+  schedule: "* * * * 1-5"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: slackduty
+            image: gcr.io/kouzoh-p-keisuke-yamashita/slackduty
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: SLACKDUTY_EXTERNAL_TRIGGER
+                value: "true"
+              - name: SLACKDUTY_CONFIG
+                value: /root/.slackduty/config.yml
+              - name: SLACKDUTY_PAGERDUTY_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: slackduty-api-key
+                    key: pagerduty-api-key
+              - name: SLACKDUTY_SLACK_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: slackduty-api-key
+                    key: slack-api-key
+            args:
+              - "/bin/slackduty"
+            volumeMounts:
+              - name: slackduty-config
+                mountPath: /root/.slackduty/config.yml
+                subPath: config.yml
+          restartPolicy: OnFailure
+          volumes:
+            - name: slackduty-config
+              configMap:
+                name: slackduty-config

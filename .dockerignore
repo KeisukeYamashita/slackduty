@@ -1,0 +1,4 @@
+_docs/
+.envrc
+.gitignore
+k8s/

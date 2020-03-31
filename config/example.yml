@@ -1,0 +1,15 @@
+groups:
+  - name: "Slackduty on-support Slack usergroup"
+    schedule: "* * * * *" 
+    usergroups:
+     - "handle:slackduty-on-support"
+    members: 
+      pagerduty:
+        teams:
+        - "name:slackdutyPrimary"
+        services:
+        - "name:slackduty-backend"
+        schedules:
+        - "name:slackduty-oncall"
+    exclude:
+      - "name:slackduty@example.com"
